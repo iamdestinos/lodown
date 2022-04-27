@@ -13,6 +13,80 @@ function identity(value) {
 }
 
 /**
+ * typeof: function takes in a value and returns a string detailing its data type
+ * @param {any value} value: the value to tell the data type of
+ * @return {string}: a string value of the input value's data type 
+ */
+
+ _.typeOf = function(value) {
+    //determine if value is undefined
+    if(value === undefined) {
+        return 'undefined';
+    }
+    //determine if value is null
+    else if(value === null) {
+        return 'null';
+    }
+    //determine if value is an array
+    else if(Array.isArray(value)) {
+        return 'array';
+    }
+    //determine if value is an object
+    else if(typeof value === 'object' && !(value instanceof Date)) {
+        return 'object';
+    } else {
+        //use typeof for rest of checks
+        return typeof value;
+    }
+};
+
+/**
+ * first: return a number of values from an array starting from the first value in the array
+ * @param {array} array: the array which to take values from
+ * @param {number} number: the number of values to return  
+ * @return {array}: an array of values as long as the input number starting from the first value in array
+ */
+
+_.first = function(array, number){
+    //create output array
+    var output = [];
+
+    //determine if input array is not an array
+    if(!Array.isArray(array)) {
+        //if the input array is not an array, return []
+        return [];
+    }
+    //determine if input number is not a number
+    if(typeof number !== 'number') {
+        //if input number is not a number return first value of array
+        return array[0];
+    }
+    //determine if input number is a negative value
+    if(number < 0) {
+        //if number is a negative value return empty array
+        return [];
+    }
+    //determine if input number is greater than array.length
+    if(array.length < number) {
+        //if true return whole input array
+        return array;
+    }
+
+    //iterate from 0 to input number
+    for (let i = 0; i < number; i++) {
+        output.push(array[i]);
+    }
+    //return output
+    return output;
+};
+
+/**
+ * last:
+ * @param {*} collection 
+ * @param {*} action 
+ */
+
+/**
  * each: Designed to loop over a collection, Array or Object, and applies the 
  * action Function to each value in the collection.
  * 
