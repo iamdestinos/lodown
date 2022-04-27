@@ -81,7 +81,64 @@ _.first = function(array, number){
 };
 
 /**
- * last:
+ * last: return a number of values from an array ending in the last value of the array
+ * @param {array} array: the array values are taken from 
+ * @param {number} number: the number of values to return
+ * @return {array}: array of values that ends with the last value of input array
+ */
+
+_.last = function(array, number){
+    //create output array
+    var output = [];
+
+    //determine if input array is not an array
+    if(!Array.isArray(array)) {
+        return [];
+    }
+    //determine if input number is not a number
+    if(typeof number !== 'number') {
+        return array[array.length - 1];
+    }
+    //determine if input number is negative
+    if(number < 0) {
+        return [];
+    }
+    //determine if input number is greater than array.length
+    if(number > array.length) {
+        return array;
+    }
+
+    //iterate through loop
+    for (let i = array.length - number; i < array.length; i++) {
+        //add current value to output array
+        output.push(array[i]);
+    }
+    //return output
+    return output;
+};
+
+/**
+ * indexOf: returns an index number of the first instance of a selected value 
+ * @param {array} array: the array being searched through for a value
+ * @param {value} value: the value to be found in an array
+ * @return {number}: the number representing the value's place in the array 
+ */
+
+ _.indexOf = function(array, value) {
+    //iterate through input array
+    for (let i = 0; i < array.length; i++) {
+        //determine if current content of array equals value
+        if(array[i] == value) {
+            //if true, return value of i
+            return i;
+        }
+    }
+    //after going through loop return -1
+    return -1;
+};
+
+/**
+ * 
  * @param {*} collection 
  * @param {*} action 
  */
