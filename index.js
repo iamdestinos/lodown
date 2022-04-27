@@ -120,7 +120,7 @@ _.last = function(array, number){
 /**
  * indexOf: returns an index number of the first instance of a selected value 
  * @param {array} array: the array being searched through for a value
- * @param {value} value: the value to be found in an array
+ * @param {any value} value: the value to be found in an array
  * @return {number}: the number representing the value's place in the array 
  */
 
@@ -135,6 +135,26 @@ _.last = function(array, number){
     }
     //after going through loop return -1
     return -1;
+};
+
+/**
+ * contains: searches for a value and returns true if it is in a given array
+ * @param {array} array: the array being searched for a value
+ * @param {any value} value: the value being searched for in the array
+ * @return {boolean}: Boolean value states if value sought after is within array
+ */
+
+ _.contains = function(array, value){
+    //iterate through input array
+    for(let i = 0; i < array.length; i++) {
+        //determine if current value in array is same as input value
+        if(array[i] === value) {
+            //if true, return true
+            return true;
+        }
+    }
+    //after iterating through loop return false
+    return false;
 };
 
 /**
@@ -163,3 +183,39 @@ function each(collection, action) {
     }
 }
 module.exports.each = each;
+
+/**
+ * unique: returns an array of values with all duplicates removed 
+ * @param {array} array: array containing repeating values
+ * @return {array}: output array has all values of input array but lacks a repeated value
+ */
+
+ _.unique = function(array){
+    //create output array
+    var output = [];
+    //push first value in input array to output
+    output.push(array[0]);
+
+    //iterate through input array
+    for (let i = 0; i < array.length; i++) {
+        //var isUnique equals true
+        let isUnique = true;
+        //iterate through output array
+        for (let j = 0; j < output.length; j++) {
+            //determine if current value in i is same as current value in j
+            if(array[i] == output[j]) {
+                //if true, isUnique is false
+                isUnique = false;
+            }
+        }
+        //determine if isUnique is true
+        if(isUnique) {
+            //if true, add current value of array i to output
+            output.push(array[i]);
+        }
+    }
+
+    //return output
+    return output;
+};
+
