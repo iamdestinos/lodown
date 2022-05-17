@@ -219,3 +219,276 @@ module.exports.each = each;
     return output;
 };
 
+
+/**
+ * filter: returns an array of values that have gone through a function and the function returned true
+ * @param {array} collection: input array of values to be filtered
+ * @param {func} action: function that will take in a value from input array and return a boolean 
+ * @return {array}: output array contains all values from input array that returned true when put through
+ * input func.
+ */
+_.filter = function(array, func){
+    //create var output
+    var output = [];
+
+    //iterate through array using for loop
+    for (let i = 0; i < array.length; i++) {
+        //determine if function returns true
+        if(func(array[i], i, array)) {
+            //if true, push current element in input array to output array
+            output.push(array[i]);
+        }
+    }
+
+    //return output
+    return output;
+};
+
+/**
+ * reject: returns an array of values passed through a function and returned false. The inverse of filter
+ * @param {array} collection: input array of values to be passed through input func. 
+ * @param {func} action: function that will take in value in array and return boolean
+ * @return {array}: array of values that when passed through input func returned false
+ */
+ _.reject = function(array, func){
+    //create var output
+    var output = [];
+
+    //iterate through array input using for loop
+    for(let i = 0; i < array.length; i++) {
+        //determine if function returned false
+        if(!func(array[i], i, array)) {
+            //if so, push value of input array to output
+            output.push(array[i]);
+        }
+    }
+
+    //return output
+    return output;
+};
+
+/**
+ * partition: returns an array made up of two arrays. The first array contains values that returned
+ * true when passed through the input function and the second contains values that returned false.
+ * @param {array} collection: an array of values to be passed through input func
+ * @param {func} action: function that takes in a value from input array and returns a boolean
+ * @return {array}: an array made up of two arrays, the first containing values that returned true from
+ * passing input func, the second containing values that returned false from passing input func 
+ */
+ _.partition = function(array, func){
+    //create var output as an array containing two arrays
+    var output = [[], []];
+
+    //iterate through array input using for loop
+    for (let i = 0; i < array.length; i++) {
+        //determine if func returns true
+        if(func(array[i], i, array)) {
+            //if true, push current value to first array in output array
+            output[0].push(array[i]);
+        } else {
+            //if false, push current value to second array in output array
+            output[1].push(array[i]);
+        }
+    }
+
+    //return output
+    return output;
+};
+
+/**
+ * map: takes in a collection of values that are passed through a function and returns a new array of
+ * values from the returned values
+ * @param {collection} collection: an array or object whose values are passed through input func
+ * @param {func} action: values from input collection are passed through and return new value
+ * @return {output}: an array of values resulting from values passed through input func
+ */
+ _.map = function(collection, func) {
+    //create output var
+    var output = [];
+
+    //determine if input collection is an array
+    if(Array.isArray(collection)) {
+        //iterate using for loop
+        for (let i = 0; i < collection.length; i++) {
+            var result = func(collection[i], i, collection); //3 arguments
+            output.push(result);
+        }
+    } else {
+        //else it's an object
+        //iterate using for key in obj loop
+        for (let key in collection) {
+            output.push(func(collection[key], key, collection)); //3 arguments
+        }
+    }
+
+    //return output
+    return output;
+};
+
+/**
+ * pluck: takes in an array of objects and returns an array of values from a specific property in each object
+ * @param {array} collection: an array of objects that is passed through the map function 
+ * @param {prop} string: a string representing a key in an object that is used to return the value in
+ * each object's key-value pair
+ * @return {output}: an array of values from prop found in each object in input array 
+ */
+ _.pluck = function(array, prop){
+    //invoke map on input array
+    let output = _.map(array, function(element){
+        // what should this function return?
+        return element[prop];
+    }); 
+
+    //return output
+    return output;
+};
+
+/**
+ * every: returns a boolean regarding if every value in a collection successfully passed a function
+ * @param {collection} collection: an array or object that is passed through func 
+ * @param {func} action: a value or function that if its a function every value in input collection
+ * passes through that returns boolean  
+ * @return {boolean}: boolean value returned true if every value in input collection returned true
+ * when passed through input func
+ */
+ _.every = function(collection, func){
+    //determine if collection is an array
+    if(Array.isArray(collection)) {
+        //if collection is an array iterate through with for loop
+        for (let i = 0; i < collection.length; i++) {
+            //determine if func is a function
+            if(typeof func === 'function') {
+                //if true
+                //determine if function returns false with current value of array
+                if(!func(collection[i], i, collection)) {
+                    //if false, return false
+                    return false;
+                }
+            } else {
+                //if func is not a function determine if current value is falsey
+                if(!collection[i]) {
+                    return false;
+                }
+            }
+        }
+    } else {
+        //if collection is an object iterate with a for key in obj loop
+        for (let key in collection) {
+            //determine if func is a function
+            if(typeof func === 'function') {
+                //if true
+                //determine if function returns false with current key
+                if(!func(collection[key], key, collection)) {
+                    //if false, return false
+                    return false;
+                }
+            } else {
+                //if func is not a function determine if current value is falsey
+                if(!collection[key]) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    //return true if all else has passed
+    return true;
+};
+
+/**
+ * some: returns boolean regarding if a collection contains at least one value that returns true
+ * passing through a function
+ * @param {collection} collection: an arrayor object whose values are passed through input func 
+ * @param {func} action: a value or function that if a function will pass through values from input
+ * collection and return boolean
+ * @return {boolean}: a boolean that is true if a minimum single value in input collection passes func
+ * and false if none pass
+ */
+ _.some = function(collection, func){
+    //determine if collection is an array
+    if(Array.isArray(collection)) {
+        //if true, iterate through collection using for loop
+        for(let i = 0; i < collection.length; i++) {
+            //determine if func is a function
+            if(typeof func === 'function') {
+                //if true, determine if func with current value returns true
+                if(func(collection[i], i, collection)) {
+                    //if func is true return true
+                    return true;
+                }
+            } else {
+                //if func is not a function determine if current value of collection is truthy
+                if(collection[i]) {
+                    return true;
+                }
+            }
+        }
+    } else {
+        //if collection is an object, iterate through collection using for key in obj loop
+        for(let key in collection) {
+            //determine if func is a function
+            if(typeof func === 'function') {
+                //if true, determine if current value in func is true
+                if(func(collection[key], key, collection)) {
+                    //if func is true return true
+                    return true;
+                }
+            } else {
+                //if func is not a function determine if current value of collection is truthy
+                if(collection[key]) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    //return false if all else passes
+    return false;
+ };
+
+ /**
+ * reduce: takes in an array, function, and value to return a value resulting from passing value
+ * through a function with each value in array
+ * @param {array} collection: an array of values passed through input func alongside seed 
+ * @param {func} action: a function that takes in an array and seed value and returns new seed
+ * @param {seed} value: a value that will accumulate new value each time it is passed through input func
+ * @return {seed}: the value of input seed after it has been passed through the final iteration of input func 
+ */
+  _.reduce = function(array, func, seed) {
+    //determine if seed value exists
+    if(seed !== undefined) {
+        //if true, iterate from start of array to end of it
+        for(let i = 0; i < array.length; i++) {
+            //
+            seed = func(seed, array[i], i, array);
+        }
+    } else {
+        //if false, start from second place of array to end
+        seed = array[0];
+        for(let i = 1; i < array.length; i++) {
+            seed = func(seed, array[i], i, array);
+        }
+    }
+
+    //return seed
+    return seed
+};
+
+/**
+ * extend: copy properties from additional objects and pass them onto the first object
+ * @param {obj1} object: first object that will take in properties from all successive input objects 
+ * @param {output} object: object containing all properties copied over from successive input objects 
+ */
+ _.extend = function(obj1){
+    //create output var equal to obj 1
+    var output = obj1;
+    
+    //iterate through arguments
+    for(let i = 1; i < arguments.length; i++) {
+        //assign current argument to output
+        Object.assign(output, arguments[i]); 
+    }
+    
+    //return output
+    return output;
+};
